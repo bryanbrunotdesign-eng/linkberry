@@ -24,26 +24,31 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
     return <div className="min-h-screen">{children}</div>;
   }
 
-  // Desktop preview — iPhone 15 Pro frame
+  // Desktop preview — iPhone 16 Pro frame
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#1a1a2e] p-6">
+    <div className="flex items-center justify-center min-h-screen bg-[#0d0d0d] p-6">
       <div className="relative">
-        {/* Outer bezel */}
+        {/* Outer bezel — titanium-finish dark frame */}
         <div
-          className="relative rounded-[54px] bg-[#1C1C1E] p-[12px] shadow-2xl"
-          style={{ width: 417, height: 876 }}
+          className="relative p-[13px] shadow-[0_32px_80px_rgba(0,0,0,0.8)]"
+          style={{
+            width: 428,
+            height: 900,
+            borderRadius: 58,
+            background: "linear-gradient(145deg, #3a3a3c 0%, #1c1c1e 40%, #2c2c2e 100%)",
+          }}
         >
           {/* Inner screen – transform creates a containing block for fixed children */}
           <div
-            className="relative rounded-[44px] overflow-hidden bg-black"
-            style={{ width: 393, height: 852, transform: "translateZ(0)" }}
+            className="relative overflow-hidden bg-black"
+            style={{ width: 402, height: 874, borderRadius: 46, transform: "translateZ(0)" }}
           >
             {/* Dynamic Island */}
             <div className="absolute top-0 left-0 right-0 z-[200] flex justify-center pointer-events-none">
               <div
                 className="bg-black"
                 style={{
-                  width: 126,
+                  width: 120,
                   height: 36,
                   borderBottomLeftRadius: 22,
                   borderBottomRightRadius: 22,
@@ -62,16 +67,19 @@ export function DeviceFrame({ children }: { children: React.ReactNode }) {
 
             {/* Home indicator bar */}
             <div className="absolute bottom-2 left-0 right-0 z-[200] flex justify-center pointer-events-none">
-              <div className="w-[134px] h-[5px] bg-black/20 rounded-full" />
+              <div className="w-[138px] h-[5px] bg-black/25 rounded-full" />
             </div>
           </div>
         </div>
 
-        {/* Side buttons */}
-        <div className="absolute left-[-2px] top-[126px] w-[3px] h-[18px] bg-[#2C2C2E] rounded-l-sm" />
-        <div className="absolute left-[-2px] top-[168px] w-[3px] h-[32px] bg-[#2C2C2E] rounded-l-sm" />
-        <div className="absolute left-[-2px] top-[210px] w-[3px] h-[32px] bg-[#2C2C2E] rounded-l-sm" />
-        <div className="absolute right-[-2px] top-[186px] w-[3px] h-[48px] bg-[#2C2C2E] rounded-r-sm" />
+        {/* Left side — Action button + Volume up + Volume down */}
+        <div className="absolute left-[-3px] top-[108px] w-[3px] h-[14px] bg-[#3a3a3c] rounded-l-sm" style={{ borderRadius: "2px 0 0 2px" }} />
+        <div className="absolute left-[-3px] top-[152px] w-[3px] h-[34px] bg-[#3a3a3c]" style={{ borderRadius: "2px 0 0 2px" }} />
+        <div className="absolute left-[-3px] top-[198px] w-[3px] h-[34px] bg-[#3a3a3c]" style={{ borderRadius: "2px 0 0 2px" }} />
+
+        {/* Right side — Power button + Camera Control (new on 16) */}
+        <div className="absolute right-[-3px] top-[168px] w-[3px] h-[52px] bg-[#3a3a3c]" style={{ borderRadius: "0 2px 2px 0" }} />
+        <div className="absolute right-[-3px] top-[460px] w-[3px] h-[44px] bg-[#3a3a3c]" style={{ borderRadius: "0 2px 2px 0" }} />
       </div>
     </div>
   );
