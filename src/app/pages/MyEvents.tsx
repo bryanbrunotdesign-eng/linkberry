@@ -50,7 +50,7 @@ export default function MyEvents() {
     <div className="bg-white min-h-screen font-['Open_Sans',sans-serif] flex flex-col">
       {/* Header */}
       <div className="bg-white border-b border-[#E2E8F0] fixed top-0 left-0 right-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-4 pb-4">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-10 pb-4">
           <div className="flex items-center justify-between mb-4">
             <button 
               onClick={() => goBack()}
@@ -71,7 +71,7 @@ export default function MyEvents() {
       </div>
 
       {/* Events List */}
-      <div className="flex-1 overflow-y-auto pt-32 pb-24 bg-[#F7F8FA]">
+      <div className="flex-1 overflow-y-auto pt-36 pb-24 bg-[#F7F8FA]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           {/* Summary Header */}
           <div className="mb-6 bg-white rounded-2xl p-5 border border-[#E2E8F0]">

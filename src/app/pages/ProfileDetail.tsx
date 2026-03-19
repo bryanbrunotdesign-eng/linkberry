@@ -118,7 +118,7 @@ export default function ProfileDetail() {
     <div className="min-h-screen bg-[#F7F8FA] font-['Open_Sans',sans-serif] pb-24">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-white border-b border-[#E2E8F0]">
-        <div className="px-4 py-4 flex items-center justify-between">
+        <div className="px-4 pt-10 pb-4 flex items-center justify-between">
           <button
             onClick={() => goBack()}
             className="p-2 -ml-2 rounded-lg transition-colors"
