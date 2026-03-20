@@ -19,46 +19,50 @@ export function CalendarHeader({ onBackClick, selectedLayer, onLayerChange, even
   const navigate = useNavigate();
   const [weekOffset, setWeekOffset] = useState(0);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const today = initialDate || getAppToday();
-  const [selectedDate, setSelectedDate] = useState(today);
-  
+  // today is ALWAYS the real current date — never changes when a date is selected
+  const today = getAppToday();
+  const [selectedDate, setSelectedDate] = useState(initialDate || today);
+
   const handleDateSelect = (date: Date) => {
+    // Only update the selected date — chevrons handle week navigation separately
     setSelectedDate(date);
     if (onDateChange) {
       onDateChange(date);
     }
   };
-  
-  // Calculate the week to display based on offset
+
+  const goToPrevWeek = () => setWeekOffset(w => w - 1);
+  const goToNextWeek = () => setWeekOffset(w => w + 1);
+
+  // Calculate the week to display based on weekOffset from real today
   const getWeekDays = () => {
-    const targetDate = new Date(today);
-    targetDate.setDate(today.getDate() + (weekOffset * 7));
-    
-    const dayOfWeek = targetDate.getDay();
-    const sunday = new Date(targetDate);
-    sunday.setDate(targetDate.getDate() - dayOfWeek);
-    
+    // Start from real today, then jump by weekOffset weeks
+    const base = new Date(today);
+    base.setDate(today.getDate() + weekOffset * 7);
+
+    // Find Sunday of that week
+    const sunday = new Date(base);
+    sunday.setDate(base.getDate() - base.getDay());
+
     const days = [];
     const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    
+
     for (let i = 0; i < 7; i++) {
       const date = new Date(sunday);
       date.setDate(sunday.getDate() + i);
-      
+
       const isToday = date.toDateString() === today.toDateString();
       const isSelected = date.toDateString() === selectedDate.toDateString();
-      const isCurrentMonth = date.getMonth() === targetDate.getMonth();
-      
+
       days.push({
         day: dayNames[i],
         date: date.getDate(),
         fullDate: date,
-        isCurrentMonth,
         isToday,
-        isSelected
+        isSelected,
       });
     }
-    
+
     return days;
   };
 
@@ -161,44 +165,54 @@ export function CalendarHeader({ onBackClick, selectedLayer, onLayerChange, even
           </div>
         </div>
 
-        {/* Week View */}
-        <div className="flex items-center justify-between">
-          <button className="p-0.5 sm:p-1 rounded transition-colors flex-shrink-0" onClick={() => setWeekOffset(weekOffset - 1)}>
+        {/* Week View — chevrons on both sides control week navigation only */}
+        <div className="flex items-center justify-between gap-1">
+          <button
+            className="p-1.5 rounded-xl bg-[#F7F8FA] active:bg-[#E2E8F0] transition-colors flex-shrink-0"
+            onClick={goToPrevWeek}
+            aria-label="Previous week"
+          >
             <ChevronLeft className="w-5 h-5 text-[#0D1117]" />
           </button>
 
-          <div className="flex items-center justify-between flex-1 px-1 sm:px-2">
+          <div className="flex items-center justify-between flex-1">
             {weekDays.map((item, index) => (
               <button
                 key={index}
                 onClick={() => handleDateSelect(item.fullDate)}
-                className={`flex flex-col items-center p-1 sm:p-2 rounded-xl sm:rounded-2xl transition-colors cursor-pointer ${
-                  item.isSelected ? 'bg-[#2E9BF5]' : ''
-                }`}
+                className="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl transition-colors active:scale-95"
               >
-                <span className={`text-[10px] sm:text-xs font-medium mb-1 sm:mb-2 ${
-                  item.isSelected 
-                    ? 'text-white' 
-                    : 'text-[#A0AEC0]'
+                {/* Day letter */}
+                <span className={`text-[10px] font-semibold uppercase tracking-wide ${
+                  item.isSelected ? 'text-[#0A7CFF]' : 'text-[#A0AEC0]'
                 }`}>
                   {item.day}
                 </span>
-                <div
-                  className={`w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 flex items-center justify-center rounded-lg text-xs sm:text-sm font-semibold transition-colors ${
-                    item.isSelected
-                      ? 'text-white'
-                      : item.isCurrentMonth
-                      ? 'text-[#0D1117]'
-                      : 'text-[#A0AEC0]'
-                  }`}
-                >
+
+                {/* Date number pill */}
+                <div className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold transition-all ${
+                  item.isSelected
+                    ? 'bg-[#0A7CFF] text-white shadow-md'
+                    : item.isToday
+                    ? 'bg-[#E8F2FF] text-[#0A7CFF]'
+                    : 'text-[#0D1117]'
+                }`}>
                   {item.date}
                 </div>
+
+                {/* Today dot indicator */}
+                <div className={`w-1 h-1 rounded-full transition-all ${
+                  item.isToday && !item.isSelected ? 'bg-[#0A7CFF]' : 'bg-transparent'
+                }`} />
               </button>
             ))}
           </div>
 
-          <button className="p-0.5 sm:p-1 rounded transition-colors flex-shrink-0" onClick={() => setWeekOffset(weekOffset + 1)}>
+          <button
+            className="p-1.5 rounded-xl bg-[#F7F8FA] active:bg-[#E2E8F0] transition-colors flex-shrink-0"
+            onClick={goToNextWeek}
+            aria-label="Next week"
+          >
             <ChevronRight className="w-5 h-5 text-[#0D1117]" />
           </button>
         </div>
