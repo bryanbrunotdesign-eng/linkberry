@@ -180,30 +180,35 @@ export function CalendarHeader({ onBackClick, selectedLayer, onLayerChange, even
               <button
                 key={index}
                 onClick={() => handleDateSelect(item.fullDate)}
-                className="flex flex-col items-center gap-1 py-1 px-1.5 rounded-2xl transition-colors active:scale-95"
+                className={`flex flex-col items-center gap-0.5 py-2 px-2.5 rounded-full transition-all active:scale-95 ${
+                  item.isSelected
+                    ? 'bg-[#0A7CFF] shadow-md shadow-blue-200'
+                    : item.isToday
+                    ? 'bg-[#E8F2FF]'
+                    : ''
+                }`}
               >
                 {/* Day letter */}
                 <span className={`text-[10px] font-semibold uppercase tracking-wide ${
-                  item.isSelected ? 'text-[#0A7CFF]' : 'text-[#A0AEC0]'
+                  item.isSelected
+                    ? 'text-white'
+                    : item.isToday
+                    ? 'text-[#0A7CFF]'
+                    : 'text-[#A0AEC0]'
                 }`}>
                   {item.day}
                 </span>
 
-                {/* Date number pill */}
-                <div className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold transition-all ${
+                {/* Date number */}
+                <span className={`text-sm font-bold leading-none ${
                   item.isSelected
-                    ? 'bg-[#0A7CFF] text-white shadow-md'
+                    ? 'text-white'
                     : item.isToday
-                    ? 'bg-[#E8F2FF] text-[#0A7CFF]'
+                    ? 'text-[#0A7CFF]'
                     : 'text-[#0D1117]'
                 }`}>
                   {item.date}
-                </div>
-
-                {/* Today dot indicator */}
-                <div className={`w-1 h-1 rounded-full transition-all ${
-                  item.isToday && !item.isSelected ? 'bg-[#0A7CFF]' : 'bg-transparent'
-                }`} />
+                </span>
               </button>
             ))}
           </div>
